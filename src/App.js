@@ -1,7 +1,20 @@
 import React, {Component} from 'react';
 import './App.css';
 import Person from "./Person/Person";
-import Radium, {StyleRoot} from "radium";
+import styled from 'styled-components';
+
+const StyledButton = styled.button`
+    background-color: ${props=> props.alt ? 'red' : 'green'};
+    color: white;
+    font: inherit;
+    border: 1px solid blue;
+    padding: 8px;
+    cursor: pointer;
+    &:hover {
+        background-color: ${props=> props.alt ? 'salmon' : 'lightgreen'};
+        color: black;
+    }
+`;
 
 class App extends Component {
     state = {
@@ -83,18 +96,16 @@ class App extends Component {
             classes.push('bold');
         }
         return (
-            <StyleRoot>
                 <div className="App">
                     <h1> Hi. I'm React App.</h1>
-                    <button style={style} onClick={this.togglePersonsHandler}>Toggle Names</button>
+                    <StyledButton alt={this.state.showPersons} onClick={this.togglePersonsHandler}>Toggle Names</StyledButton>
                     <p className={classes.join(' ')}>React</p>
                     {persons}
                 </div>
-            </StyleRoot>
         );
     }
 
 
 }
 
-export default Radium(App);
+export default App;
