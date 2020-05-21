@@ -1,15 +1,31 @@
 import React, {Component} from 'react';
+
 import appCss from './App.module.css';
-import Person from "./Person/Person";
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit'
 
 class App extends Component {
+    constructor(props,) {
+        super(props);
+        console.log('[App.js] constructor')
+    }
+
     state = {
         persons: [
             {id: 'asdfsasdfasd', name: "Bryan", age: 25},
-            {id: 'asdfsasdfasdfr', name: "Veronica", age: 27},
+            {id: 'asdfsasdfasdfr', name: "Verônica", age: 27},
             {id: 'asdfsasdfr324', name: "Titi", age: 10}
         ],
         showPersons: false
+    }
+
+    static getDerivedStateFromProps(props, state){
+        console.log('[App.js] getDerivedStateFromProps')
+        return state;
+    }
+
+    componentDidMount() {
+
     }
 
     nameChangeHandler = (event, personId) => {
@@ -40,42 +56,27 @@ class App extends Component {
 
     }
 
-
     render() {
         let persons = null;
-        let buttonCss = '';
 
         if (this.state.showPersons) {
             persons = (
-                <div>{
-                    this.state.persons.map((person, index) => {
-                        return <Person name={person.name} age={person.age} key={person.id}
-                                       changed={(event) => this.nameChangeHandler(event, person.id)}
-                                       click={this.deletePersonHandler.bind(this, index)}/>
-                    })
-                }
-                </div>
+                <Persons persons={this.state.persons}
+                         clicked={this.deletePersonHandler}
+                         changed={this.nameChangeHandler}/>
             );
-            buttonCss= appCss.Red;
+
         }
 
-        const classes = [];
-        if (this.state.persons.length <= 2) {
-            classes.push(appCss.red);
-        }
-        if (this.state.persons.length <= 1) {
-            classes.push(appCss.bold);
-        }
         return (
-                <div className={appCss.App}>
-                    <h1> Hi. I'm React App.</h1>
-                    <button className={buttonCss} onClick={this.togglePersonsHandler}>Toggle Names</button>
-                    <p className={classes.join(' ')}>React</p>
-                    {persons}
-                </div>
+            <div className={appCss.App}>
+                <Cockpit showPersons={this.state.showPersons}
+                         persons={this.state.persons}
+                         clicked={this.togglePersonsHandler}/>
+                {persons}
+            </div>
         );
     }
-
 
 }
 
